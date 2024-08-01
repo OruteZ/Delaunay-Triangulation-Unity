@@ -6,6 +6,16 @@ using UnityEngine;
 
 public class DelaunayViewer : MonoBehaviour
 {
+    public void SetPoints(int pointCount)
+    {
+        _pointCount = pointCount;
+    }
+    
+    public int GetPoints()
+    {
+        return _pointCount;
+    }
+    
     [SerializeField] private Vector2 _size = new Vector2(10, 10);
     [SerializeField] private int _pointCount = 10;
     
@@ -19,6 +29,8 @@ public class DelaunayViewer : MonoBehaviour
     [Header("Colors")]
     [SerializeField] private Material enableDot;
     [SerializeField] private Material disableDot;
+    
+    //====================================================================================================
     
     
     Dictionary<Triangle, GameObject[]> triangleView = new Dictionary<Triangle, GameObject[]>();
@@ -59,6 +71,51 @@ public class DelaunayViewer : MonoBehaviour
             
             Debug.Log(cnt);
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reset();
+        }
+    }
+
+    private void Reset()
+    {
+        foreach (var pair in triangleView)
+        {
+            foreach (GameObject go in pair.Value)
+            {
+                Destroy(go);
+            }
+        }
+        
+        foreach (var pair in circumcircleView)
+        {
+            foreach (GameObject go in pair.Value)
+            {
+                Destroy(go);
+            }
+        }
+        
+        foreach (var pair in edgeView)
+        {
+            foreach (GameObject go in pair.Value)
+            {
+                Destroy(go);
+            }
+        }
+        
+        foreach (GameObject go in _dots)
+        {
+            Destroy(go);
+        }
+        
+        triangleView.Clear();
+        circumcircleView.Clear();
+        edgeView.Clear();
+        _dots.Clear();
+        
+        visualizingTriangulation = null;
+        startTrigger = false;
     }
 
     private List<Vector2> GeneratePoints()
@@ -309,7 +366,7 @@ public class DelaunayViewer : MonoBehaviour
         List<Triangle> result = new ();
 
         List<Vector2> points = dots.Select(dot => dot.transform.position).Select(dummy => (Vector2)dummy).ToList();
-        result.Add(DelaunayTriangulationMaker.CreateSuperTriangle(points));
+        result.Add(DelaunayTriangulation.CreateSuperTriangle(points));
         
         Vector2[] superVertices = result[0].GetVertices();
 
@@ -414,11 +471,7 @@ public class DelaunayViewer : MonoBehaviour
                 RemoveTriangle(t);
             }
         }
+        
         yield return true;
     }
-}
-
-internal class CoroutineFlag
-{
-    // pass
 }
