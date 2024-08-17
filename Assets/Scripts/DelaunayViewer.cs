@@ -11,9 +11,19 @@ public class DelaunayViewer : MonoBehaviour
         _pointCount = pointCount;
     }
     
+    public void SetPoints(string pointCount)
+    {
+        _pointCount = int.Parse(pointCount);
+    }
+    
     public int GetPoints()
     {
         return _pointCount;
+    }
+    
+    public Triangle[] GetTriangles()
+    {
+        return triangleView.Keys.ToArray();
     }
     
     [SerializeField] private Vector2 _size = new Vector2(10, 10);
@@ -198,13 +208,15 @@ public class DelaunayViewer : MonoBehaviour
     
     public void RemoveTriangle(Triangle t)
     {
-        if (triangleView.TryGetValue(t, out var goList))
+        if (triangleView.TryGetValue(t, out GameObject[] goList))
         {
             foreach (GameObject go in goList)
             {
                 Destroy(go);
             }
         }
+        
+        triangleView.Remove(t);
     }
 
     public void DrawCircumcircles(List<Triangle> triangles, Color color)
@@ -226,12 +238,13 @@ public class DelaunayViewer : MonoBehaviour
             LineRenderer lr = new GameObject("Circumcircle").AddComponent<LineRenderer>();
             
             int pointCount = 100;
-            lr.positionCount = pointCount;
+            lr.positionCount = pointCount + 1;
             for (int i = 0; i < pointCount; i++)
             {
                 float angle = i * Mathf.PI * 2 / pointCount;
                 lr.SetPosition(i, new Vector3(center.x + Mathf.Cos(angle) * radius, center.y + Mathf.Sin(angle) * radius, 0));
             }
+            lr.SetPosition(pointCount, lr.GetPosition(0));
             
             // material
             lr.material = _lineMaterial;
@@ -244,7 +257,7 @@ public class DelaunayViewer : MonoBehaviour
             
             if(circumcircleView.ContainsKey(t) is false)
             {
-                circumcircleView.Add(t, new GameObject[] {lr.gameObject});
+                circumcircleView.Add(t, new [] {lr.gameObject});
             }
             else
             {
@@ -270,12 +283,16 @@ public class DelaunayViewer : MonoBehaviour
         LineRenderer lr = new GameObject("Circumcircle").AddComponent<LineRenderer>();
         
         int pointCount = 100;
-        lr.positionCount = pointCount;
+        lr.positionCount = pointCount + 1;
         for (int i = 0; i < pointCount; i++)
         {
             float angle = i * Mathf.PI * 2 / pointCount;
-            lr.SetPosition(i, new Vector3(center.x + Mathf.Cos(angle) * radius, center.y + Mathf.Sin(angle) * radius, 0));
+            lr.SetPosition(i, new Vector3(
+                center.x + Mathf.Cos(angle) * radius, 
+                center.y + Mathf.Sin(angle) * radius, 
+                0));
         }
+        lr.SetPosition(pointCount, lr.GetPosition(0));
         
         // material
         lr.material = _lineMaterial;
@@ -396,7 +413,7 @@ public class DelaunayViewer : MonoBehaviour
             foreach (Triangle t in result)
             {
                 DrawTriangle(t, Color.yellow, 2);
-                DrawCircumcircle(t, Color.black);
+                DrawCircumcircle(t, Color.white);
 
                 yield return false;
 
