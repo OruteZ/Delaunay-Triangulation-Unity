@@ -5,6 +5,11 @@ public class VertexCountSetter : MonoBehaviour
 {
     public DelaunayViewer delaunayViewer;
     public TMP_InputField inputField;
+    
+    private void Start()
+    {
+        UpdateInputField();
+    }
 
     public void UpdateInputField()
     {

@@ -426,6 +426,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -551,6 +552,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 562d2aef290a453390d46868b28ee975, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zoomSpeed: 10
+  dragSpeed: 2
+  maxZoom: 100
+  minZoom: 20
 --- !u!1 &523785758
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,8 +901,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 350, y: -100}
-  m_SizeDelta: {x: 700, y: 200}
+  m_AnchoredPosition: {x: 350, y: -50}
+  m_SizeDelta: {x: 700, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1036539614
 GameObject:
@@ -1101,6 +1118,7 @@ GameObject:
   - component: {fileID: 1163249976}
   - component: {fileID: 1163249979}
   - component: {fileID: 1163249977}
+  - component: {fileID: 1163249980}
   m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
@@ -1190,7 +1208,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1163249980}
+        m_TargetAssemblyTypeName: VertexCountSetter, Assembly-CSharp
+        m_MethodName: SetVertexCount
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -1208,7 +1238,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1163249980}
+        m_TargetAssemblyTypeName: VertexCountSetter, Assembly-CSharp
+        m_MethodName: SetVertexCount
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1235,6 +1277,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1163249975}
   m_CullTransparentMesh: 1
+--- !u!114 &1163249980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163249975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7617c1cc22a146069ad606ec01c576b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delaunayViewer: {fileID: 1939616334}
+  inputField: {fileID: 1163249977}
 --- !u!1 &1273205174
 GameObject:
   m_ObjectHideFlags: 0
@@ -1423,7 +1479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 30, y: 20}
-  _pointCount: 80
+  _pointCount: 20
   _dotPrefab: {fileID: 1757460877165691742, guid: 21e69c93fcfecbb44b5e2450a3e0d595, type: 3}
   _lineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   _triangleWidth: 0.2
